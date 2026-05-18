@@ -2,10 +2,12 @@ package tests.listeners;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.Status;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
+import org.testng.Reporter;
 import org.testng.TestListenerAdapter;
 import tests.utils.ExtentManager;
 import tests.utils.ScreenshotUtils;
@@ -28,13 +30,16 @@ public class ExtentTestListener extends TestListenerAdapter {
     @Override
     public void onTestSuccess(ITestResult result) {
 
-        test.get().pass("Test PASSED");
+        ExtentTest extentTest = test.get();
+        addTestLogs(result, extentTest);
+        extentTest.pass("Test PASSED");
     }
 
     @Override
     public void onTestFailure(ITestResult result) {
 
         ExtentTest extentTest = test.get();
+        addTestLogs(result, extentTest);
         extentTest.fail(result.getThrowable());
 
         org.openqa.selenium.WebDriver driver = findDriver(result);
@@ -50,7 +55,9 @@ public class ExtentTestListener extends TestListenerAdapter {
     @Override
     public void onTestSkipped(ITestResult result) {
 
-        test.get().skip(result.getThrowable());
+        ExtentTest extentTest = test.get();
+        addTestLogs(result, extentTest);
+        extentTest.skip(result.getThrowable());
     }
 
     @Override
@@ -86,5 +93,11 @@ public class ExtentTestListener extends TestListenerAdapter {
         }
 
         return null;
+    }
+
+    private void addTestLogs(ITestResult result, ExtentTest extentTest) {
+        for (String log : Reporter.getOutput(result)) {
+            extentTest.log(Status.INFO, log);
+        }
     }
 }

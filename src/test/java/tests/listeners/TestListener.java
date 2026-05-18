@@ -17,7 +17,10 @@ public class TestListener extends TestListenerAdapter {
     @Override
     public void onTestFailure(ITestResult result) {
 
-        WebDriver driver = DriverFactory.getDriver();
+        WebDriver driver = DriverFactory.getExistingDriver();
+        if (driver == null) {
+            return;
+        }
 
         Path screenshotPath = ScreenshotUtils.takeScreenshot(
                 driver,

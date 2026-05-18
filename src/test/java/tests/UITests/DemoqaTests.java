@@ -6,13 +6,24 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
 public class DemoqaTests {
 
+    private WebDriver driver;
+
+    @AfterMethod
+    public void inchideBrowser() {
+        if (driver != null) {
+            driver.quit();
+            driver = null;
+        }
+    }
+
     @Test
     public void textBoxTest() {
-        WebDriver driver = new ChromeDriver();
+        driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.get("https://demoqa.com/text-box");
 
@@ -55,7 +66,7 @@ public class DemoqaTests {
 
     @Test
     public void textBoxTestNegativ() {
-        WebDriver driver = new ChromeDriver();
+        driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.get("https://demoqa.com/text-box");
 

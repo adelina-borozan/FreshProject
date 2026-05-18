@@ -3,6 +3,7 @@
 <suite name="Demo Suite">
     <listeners>
         <listener class-name="tests.listeners.TestListener"/>
+        <listener class-name="tests.listeners.ExtentTestListener"/>
     </listeners>
 
     <test name="Tests">

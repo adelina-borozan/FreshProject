@@ -8,8 +8,8 @@
 
     <test name="Tests">
         <classes>
-            <class name="tests.UITests.DemoqaTests">
-            </class>
+            <class name="tests.UITests.DemoqaTests"/>
+            <class name="tests.UITests.NavigareTests"/>
 
         </classes>
 

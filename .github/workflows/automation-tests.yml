@@ -35,6 +35,11 @@ jobs:
       - name: Run tests
         run: mvn test
 
+      - name: Show generated report files
+        if: always()
+        run: |
+          find target/surefire-reports extent-reports screenshots -maxdepth 2 -type f -print 2>/dev/null || true
+
       - name: Upload Test Report
         if: always()
         uses: actions/upload-artifact@v4
@@ -48,7 +53,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: extent-report
-          path: extent-reports/
+          path: extent-reports/ExtentReport.html
           if-no-files-found: warn
 
       - name: Upload Screenshots

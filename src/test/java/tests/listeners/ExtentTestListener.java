@@ -30,7 +30,7 @@ public class ExtentTestListener extends TestListenerAdapter {
     @Override
     public void onTestSuccess(ITestResult result) {
 
-        ExtentTest extentTest = test.get();
+        ExtentTest extentTest = getOrCreateTest(result);
         addTestLogs(result, extentTest);
         extentTest.pass("Test PASSED");
     }
@@ -38,7 +38,7 @@ public class ExtentTestListener extends TestListenerAdapter {
     @Override
     public void onTestFailure(ITestResult result) {
 
-        ExtentTest extentTest = test.get();
+        ExtentTest extentTest = getOrCreateTest(result);
         addTestLogs(result, extentTest);
         extentTest.fail(result.getThrowable());
 
@@ -55,7 +55,21 @@ public class ExtentTestListener extends TestListenerAdapter {
     @Override
     public void onTestSkipped(ITestResult result) {
 
-        ExtentTest extentTest = test.get();
+        ExtentTest extentTest = getOrCreateTest(result);
+        addTestLogs(result, extentTest);
+        extentTest.skip(result.getThrowable());
+    }
+
+    @Override
+    public void onConfigurationFailure(ITestResult result) {
+        ExtentTest extentTest = getOrCreateTest(result);
+        addTestLogs(result, extentTest);
+        extentTest.fail(result.getThrowable());
+    }
+
+    @Override
+    public void onConfigurationSkip(ITestResult result) {
+        ExtentTest extentTest = getOrCreateTest(result);
         addTestLogs(result, extentTest);
         extentTest.skip(result.getThrowable());
     }
@@ -64,6 +78,18 @@ public class ExtentTestListener extends TestListenerAdapter {
     public void onFinish(ITestContext context) {
 
         extent.flush();
+    }
+
+    private ExtentTest getOrCreateTest(ITestResult result) {
+        ExtentTest extentTest = test.get();
+        if (extentTest == null) {
+            String testName = result.getMethod() != null
+                    ? result.getMethod().getMethodName()
+                    : result.getName();
+            extentTest = extent.createTest(testName);
+            test.set(extentTest);
+        }
+        return extentTest;
     }
 
     private org.openqa.selenium.WebDriver findDriver(ITestResult result) {

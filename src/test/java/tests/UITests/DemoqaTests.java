@@ -3,12 +3,12 @@ package tests.UITests;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
+import utilities.DriverFactory;
 
 public class DemoqaTests {
 
@@ -16,16 +16,14 @@ public class DemoqaTests {
 
     @AfterMethod
     public void inchideBrowser() {
-        if (driver != null) {
-            driver.quit();
-            driver = null;
-        }
+        DriverFactory.quitDriver();
+        driver = null;
     }
 
     @Test
     public void textBoxTest() {
         Reporter.log("Starting textBoxTest", true);
-        driver = new ChromeDriver();
+        driver = DriverFactory.getDriver();
         Reporter.log("Chrome browser was opened", true);
         driver.manage().window().maximize();
         driver.get("https://demoqa.com/text-box");
@@ -83,7 +81,7 @@ public class DemoqaTests {
     @Test
     public void textBoxTestNegativ() {
         Reporter.log("Starting textBoxTestNegativ", true);
-        driver = new ChromeDriver();
+        driver = DriverFactory.getDriver();
         Reporter.log("Chrome browser was opened", true);
         driver.manage().window().maximize();
         driver.get("https://demoqa.com/text-box");

@@ -2,10 +2,11 @@ package tests.UITests;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WindowType;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import utilities.DriverFactory;
 
 public class NavigareTests {
 
@@ -13,7 +14,13 @@ public class NavigareTests {
 
     @BeforeMethod
     public void instantareBrowser(){
-        driver = new ChromeDriver();
+        driver = DriverFactory.getDriver();
+    }
+
+    @AfterMethod
+    public void inchideBrowser() {
+        DriverFactory.quitDriver();
+        driver = null;
     }
 
     @Test(priority = 2)
@@ -120,8 +127,6 @@ public class NavigareTests {
         driver.get("https://demoqa.com/alerts");
         System.out.println(driver.getTitle());
         driver.close();
-
-        driver.quit();
 
     }
 }
